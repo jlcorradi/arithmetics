@@ -19,8 +19,6 @@ public class AuthenticationService {
     );
     SecurityContextHolder.getContext().setAuthentication(authenticate);
 
-    String accessToken = tokenProvider.generateToken(username);
-
-    return accessToken;
+    return tokenProvider.generateToken(username);
   }
 }

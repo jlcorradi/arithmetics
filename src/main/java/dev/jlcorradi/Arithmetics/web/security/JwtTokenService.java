@@ -13,8 +13,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenService {
 
-  public static final String UNAUTHORIZED_ERR = "Unauthorized.";
-
   @Value("${arithmetics.security.jwtSecret}")
   private String jwtSecret;
 

@@ -24,7 +24,7 @@ public class JwtAuthController {
 
   @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public ResponseEntity<LoginResponse> login(String username, String password) {
-    LoginResponse response = null;
+    LoginResponse response;
     try {
       response = new LoginResponse(authenticationService.authenticate(username, password));
     } catch (Exception e) {
