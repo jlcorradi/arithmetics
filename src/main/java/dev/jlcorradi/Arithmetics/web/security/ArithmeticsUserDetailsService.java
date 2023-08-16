@@ -1,4 +1,4 @@
-package dev.jlcorradi.Arithmetics.web.config.security;
+package dev.jlcorradi.Arithmetics.web.security;
 
 import dev.jlcorradi.Arithmetics.core.EntityNotFoundException;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;

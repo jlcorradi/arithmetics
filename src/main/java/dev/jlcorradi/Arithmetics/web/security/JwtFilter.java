@@ -1,4 +1,4 @@
-package dev.jlcorradi.Arithmetics.web.config.security;
+package dev.jlcorradi.Arithmetics.web.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

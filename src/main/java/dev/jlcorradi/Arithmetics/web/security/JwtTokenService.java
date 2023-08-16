@@ -1,4 +1,4 @@
-package dev.jlcorradi.Arithmetics.web.config.security;
+package dev.jlcorradi.Arithmetics.web.security;
 
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;

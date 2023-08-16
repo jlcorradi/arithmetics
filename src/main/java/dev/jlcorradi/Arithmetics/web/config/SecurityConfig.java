@@ -1,6 +1,6 @@
 package dev.jlcorradi.Arithmetics.web.config;
 
-import dev.jlcorradi.Arithmetics.web.config.security.JwtFilter;
+import dev.jlcorradi.Arithmetics.web.security.JwtFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
