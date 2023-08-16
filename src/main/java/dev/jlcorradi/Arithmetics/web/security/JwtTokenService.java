@@ -14,10 +14,11 @@ import java.util.Date;
 public class JwtTokenService {
 
   public static final String UNAUTHORIZED_ERR = "Unauthorized.";
+
   @Value("${arithmetics.security.jwtSecret}")
   private String jwtSecret;
 
-  @Value("${arithmetics.security.jwtAccessTokenExpirationInMs:86400000}")
+  @Value("${arithmetics.security.jwtAccessTokenExpirationInMs}")
   private int accessTokenExpirationInMs;
 
   public String getUsernameFromJWT(String token) {

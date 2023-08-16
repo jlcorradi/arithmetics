@@ -62,7 +62,7 @@ public class ArithmeticsUserDetailsService implements UserDetailsService {
 
       @Override
       public boolean isEnabled() {
-        return RecordStatus.INACTIVE == arithmeticsUser.getStatus();
+        return RecordStatus.ACTIVE == arithmeticsUser.getStatus();
       }
     };
   }

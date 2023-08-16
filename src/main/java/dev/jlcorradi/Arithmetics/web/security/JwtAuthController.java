@@ -1,43 +1,35 @@
 package dev.jlcorradi.Arithmetics.web.security;
 
 import lombok.AllArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static dev.jlcorradi.Arithmetics.web.Paths.API_AUTH_V1;
+
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(API_AUTH_V1)
 @AllArgsConstructor
 public class JwtAuthController {
 
-  private final AuthenticationManager authenticationManager;
-  private final JwtTokenService tokenProvider;
-
-  @Setter
-  private PasswordEncoder passwordEncoder;
+  private final AuthenticationService authenticationService;
 
   record LoginResponse(String access_token) {
   }
 
-  @PostMapping(consumes = "application/x-www-form-urlencoded")
+  @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public ResponseEntity<LoginResponse> login(String username, String password) {
-
-    Authentication authenticate = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(username, password)
-    );
-    SecurityContextHolder.getContext().setAuthentication(authenticate);
-
-    String accessToken = tokenProvider.generateToken(username);
-    var response = new LoginResponse(accessToken);
+    LoginResponse response = null;
+    try {
+      response = new LoginResponse(authenticationService.authenticate(username, password));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
     return ResponseEntity.ok(response);
   }
 }

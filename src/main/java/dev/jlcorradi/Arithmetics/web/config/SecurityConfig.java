@@ -1,5 +1,6 @@
 package dev.jlcorradi.Arithmetics.web.config;
 
+import dev.jlcorradi.Arithmetics.web.Paths;
 import dev.jlcorradi.Arithmetics.web.security.JwtFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -8,10 +9,13 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,7 +26,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
+  public static final String APPLICATION_JSON = "application/json";
   private final JwtFilter jwtFilter;
+  private final UserDetailsService userDetailsService;
 
   @Bean
   public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -30,19 +36,21 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/auth").permitAll()
+            .requestMatchers(Paths.API_AUTH_V1).permitAll()
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .exceptionHandling(exHandlingConfig ->
-            exHandlingConfig.authenticationEntryPoint((request, response, authException) -> {
-              response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-              response.setContentType("application/json");
-              response
-                  .getOutputStream()
-                  .println("{ \"error\": \"" + authException.getMessage() + "\" }");
-            })
+            exHandlingConfig
+                .authenticationEntryPoint((request, response, authException) -> {
+                  log.info(authException.getMessage());
+                  response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                  response.setContentType(APPLICATION_JSON);
+                  response
+                      .getOutputStream()
+                      .println("{ \"error\": \"Access Denied\" }");
+                })
         );
 
     log.info("You are using JWT Auth Custom configuration. Login is available at /auth. " +
@@ -52,14 +60,21 @@ public class SecurityConfig {
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+  public AuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    authProvider.setUserDetailsService(userDetailsService);
+    authProvider.setPasswordEncoder(passwordEncoder());
+    return authProvider;
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-      throws Exception {
-    return authenticationConfiguration.getAuthenticationManager();
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    return config.getAuthenticationManager();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 
 }

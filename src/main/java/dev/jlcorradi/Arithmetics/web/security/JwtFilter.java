@@ -1,5 +1,6 @@
 package dev.jlcorradi.Arithmetics.web.security;
 
+import dev.jlcorradi.Arithmetics.web.Paths;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
