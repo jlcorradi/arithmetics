@@ -4,9 +4,11 @@ import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import dev.jlcorradi.Arithmetics.core.repository.ArithmeticsUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 @AllArgsConstructor
 public class PrimaryArithmeticsUserService implements ArithmeticsUserService {
 

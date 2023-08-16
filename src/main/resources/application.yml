@@ -1,3 +1,8 @@
+arithmetics:
+  security:
+    jwtSecret: "VGhpcyBpcyBhIHByb2plY3QgdG8gYmUgZXZhbHVhdGVkIGZvciB0aGUgSmF2YSBEZXZlbG9wZXIgcG9zaXRpb24gYXQgVHJ1ZU5vcnRoCg=="
+    jwtAccessTokenExpirationInMs: 86400000
+
 spring:
   liquibase:
     enabled: true

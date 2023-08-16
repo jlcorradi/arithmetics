@@ -14,10 +14,10 @@ import java.util.Date;
 public class JwtTokenService {
 
   public static final String UNAUTHORIZED_ERR = "Unauthorized.";
-  @Value("${app.jwtSecret:secret}")
+  @Value("${arithmetics.security.jwtSecret}")
   private String jwtSecret;
 
-  @Value("${app.jwtAccessTokenExpirationInMs:86400000}")
+  @Value("${arithmetics.security.jwtAccessTokenExpirationInMs:86400000}")
   private int accessTokenExpirationInMs;
 
   public String getUsernameFromJWT(String token) {
@@ -45,11 +45,11 @@ public class JwtTokenService {
     return false;
   }
 
-  private String generateToken(String username, Date expiryDate) {
+  public String generateToken(String username) {
     return Jwts.builder()
         .setSubject(username)
         .setIssuedAt(new Date())
-        .setExpiration(expiryDate)
+        .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpirationInMs))
         .signWith(SignatureAlgorithm.HS512, jwtSecret)
         .compact();
   }
