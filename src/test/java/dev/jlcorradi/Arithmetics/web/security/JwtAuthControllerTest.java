@@ -14,6 +14,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -52,10 +53,13 @@ class JwtAuthControllerTest {
         .thenReturn(new UsernamePasswordAuthenticationToken(new UserPrincipal("user@jlcorradi.dev"), null));
 
     // WHEN
-    mockMvc.perform(
-            post(Paths.API_AUTH_V1)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .content("dXNlckBqbGNvcnJhZGkucGVybW9kOnBhc3N3b3Jk"))
+    ResultActions response = mockMvc.perform(
+        post(Paths.API_AUTH_V1)
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .content("response"));
+
+    // THEN
+    response
         .andExpect(status().is(200))
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.access_token").exists());
@@ -70,11 +74,14 @@ class JwtAuthControllerTest {
         .thenThrow(new BadCredentialsException("Bad Credentials"));
 
     // WHEN
-    mockMvc.perform(
+    ResultActions response = mockMvc.perform(
         post(Paths.API_AUTH_V1)
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
             .content("dXNlckBqbGNvcnJhZGkucGVybW9kOnBhc3N3b3Jk")
-    ).andExpect(status().is(401));
+    );
+
+    // THEN
+    response.andExpect(status().is(401));
   }
 
 }

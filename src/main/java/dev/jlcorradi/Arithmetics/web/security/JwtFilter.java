@@ -1,5 +1,6 @@
 package dev.jlcorradi.Arithmetics.web.security;
 
+import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,9 +27,6 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
   public static final String BEARER_ = "Bearer ";
-
-  // For access denied errors we must be as vague as possible as to not facilitate attackers
-  public static final String NOT_AUTHORIZED_ERR = "Access Denied";
 
   public final UserDetailsService userService;
   private final JwtTokenService jwtProvider;
@@ -58,7 +56,7 @@ public class JwtFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (Exception ex) {
-      throw new BadCredentialsException(NOT_AUTHORIZED_ERR);
+      throw new BadCredentialsException(MessageConstants.ACCESS_DENIED_ERR);
     }
 
     filterChain.doFilter(request, response);

@@ -22,3 +22,7 @@ spring:
     username: arithmetics
     password: s3cr3t
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    dev.jlcorradi: DEBUG

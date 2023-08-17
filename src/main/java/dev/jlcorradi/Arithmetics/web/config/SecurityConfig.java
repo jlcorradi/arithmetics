@@ -1,5 +1,7 @@
 package dev.jlcorradi.Arithmetics.web.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.jlcorradi.Arithmetics.web.ErrorResponse;
 import dev.jlcorradi.Arithmetics.web.Paths;
 import dev.jlcorradi.Arithmetics.web.security.JwtFilter;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,8 +29,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   public static final String APPLICATION_JSON = "application/json";
+  public static final String ACCESS_DENIED = "Access Denied";
   private final JwtFilter jwtFilter;
   private final UserDetailsService userDetailsService;
+  private final ObjectMapper objectMapper;
 
   @Bean
   public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -49,12 +53,12 @@ public class SecurityConfig {
                   response.setContentType(APPLICATION_JSON);
                   response
                       .getOutputStream()
-                      .println("{ \"error\": \"Access Denied\" }");
+                      .println(objectMapper.writeValueAsString(new ErrorResponse(ACCESS_DENIED)));
                 })
         );
 
-    log.info("You are using JWT Auth Custom configuration. Login is available at /auth. " +
-        "Credentials: username/password as x-www-form-urlencoded");
+    log.info("You are using JWT Auth Custom configuration. Login is available at {}. " +
+        "Credentials: username/password as x-www-form-urlencoded", Paths.API_AUTH_V1);
 
     return http.build();
   }

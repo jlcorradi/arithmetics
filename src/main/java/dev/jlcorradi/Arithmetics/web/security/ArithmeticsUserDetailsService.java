@@ -1,6 +1,6 @@
 package dev.jlcorradi.Arithmetics.web.security;
 
-import dev.jlcorradi.Arithmetics.core.EntityNotFoundException;
+import dev.jlcorradi.Arithmetics.core.ResourceNotFoundException;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import dev.jlcorradi.Arithmetics.core.model.RecordStatus;
 import dev.jlcorradi.Arithmetics.core.service.ArithmeticsUserService;
@@ -25,7 +25,7 @@ public class ArithmeticsUserDetailsService implements UserDetailsService {
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userService.findByUsername(username)
         .map(ArithmeticsUserDetailsService::mapToUserDetails)
-        .orElseThrow(EntityNotFoundException::new);
+        .orElseThrow(ResourceNotFoundException::new);
   }
 
   private static UserDetails mapToUserDetails(ArithmeticsUser arithmeticsUser) {
