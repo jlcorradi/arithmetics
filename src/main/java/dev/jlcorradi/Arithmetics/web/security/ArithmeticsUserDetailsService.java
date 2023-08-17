@@ -2,7 +2,7 @@ package dev.jlcorradi.Arithmetics.web.security;
 
 import dev.jlcorradi.Arithmetics.core.ResourceNotFoundException;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
-import dev.jlcorradi.Arithmetics.core.model.RecordStatus;
+import dev.jlcorradi.Arithmetics.core.commons.RecordStatus;
 import dev.jlcorradi.Arithmetics.core.service.ArithmeticsUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

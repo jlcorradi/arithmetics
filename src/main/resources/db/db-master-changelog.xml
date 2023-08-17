@@ -10,5 +10,6 @@
         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
     
     <include file="1.0.0/1692133300.xml" relativeToChangelogFile="true" />
-    
+    <include file="1.0.0/1692239235.xml" relativeToChangelogFile="true" />
+
 </databaseChangeLog>

@@ -1,7 +1,7 @@
 package dev.jlcorradi.Arithmetics.core.service;
 
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
-import dev.jlcorradi.Arithmetics.core.repository.ArithmeticsUserRepository;
+import dev.jlcorradi.Arithmetics.core.dao.ArithmeticsUserDao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.Optional;
 public class PrimaryArithmeticsUserService implements ArithmeticsUserService {
 
   @Getter
-  private final ArithmeticsUserRepository repository;
+  private final ArithmeticsUserDao repository;
 
   @Override
   public Optional<ArithmeticsUser> findByUsername(String username) {

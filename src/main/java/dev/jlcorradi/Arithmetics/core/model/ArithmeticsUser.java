@@ -1,6 +1,7 @@
 package dev.jlcorradi.Arithmetics.core.model;
 
 import dev.jlcorradi.Arithmetics.core.base.SoftDeletable;
+import dev.jlcorradi.Arithmetics.core.commons.RecordStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
