@@ -29,7 +29,8 @@ class OperationExecutionManagerTest {
   static Stream<Arguments> provideArguments() {
     return Stream.of(
         Arguments.of(OperationType.ADDITION, new Object[]{5D, 6D}, 11D),
-        Arguments.of(OperationType.SUBTRACTION, new Object[]{10D, 6D}, 4D),
+        Arguments.of(OperationType.ADDITION, new Object[]{5.23D, 6.22D}, 11.45D),
+        Arguments.of(OperationType.SUBTRACTION, new Object[]{10D, 6.5D}, 3.5D),
         Arguments.of(OperationType.MULTIPLICATION, new Object[]{5D, 6D}, 30D),
         Arguments.of(OperationType.DIVISION, new Object[]{149D, 7D}, 21.29D),
         Arguments.of(OperationType.DIVISION, new Object[]{24D, 3D}, 8D),
@@ -44,25 +45,33 @@ class OperationExecutionManagerTest {
   @MethodSource("provideArguments")
   @Description("Should Execute Operations Successfully")
   void shouldExecuteAdditionSuccess(OperationType operationType, Object[] input, Object expectedResult) {
+    // WHEN
     Object result = subject.execute(operationType, input);
+    // THEN
     assertEquals(expectedResult, result, String.format("Operation executed: %s", operationType.getDescription()));
   }
 
   @Test
   @Description("Should Fail Wrong Input Count")
   void shouldFailWrongInputCount() {
+    // WHEN
     BusinessException ex = assertThrows(BusinessException.class,
         () -> subject.execute(OperationType.ADDITION, new Object[]{5D})
     );
+
+    // THEN
     assertEquals(MessageConstants.WRONG_INPUT_COUNT_ERR, ex.getMessage());
   }
 
   @Test
   @Description("Should Fail on Division By Zero")
   void shouldFailOnDivByZero() {
-    val businessException = assertThrows(BusinessException.class,
+    // WHEN
+    final BusinessException businessException = assertThrows(BusinessException.class,
         () -> subject.execute(OperationType.DIVISION, new Object[]{45D, 0D})
     );
+
+    // THEN
     assertEquals(MessageConstants.DIVISION_BY_ZERO_ERR, businessException.getMessage());
   }
 }

@@ -16,6 +16,9 @@
             <column name="cost" type="numeric(18,2)">
                 <constraints nullable="false"/>
             </column>
+            <column name="status" type="varchar(30)" defaultOnNull="true" defaultValue="ACTIVE" >
+                <constraints nullable="false" />
+            </column>
         </createTable>
 
         <createTable tableName="record">
@@ -44,19 +47,6 @@
             </column>
         </createTable>
 
-        <createTable tableName="user_balance">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="user_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_user_balance_user"
-                             referencedTableName="arithmetics_user" referencedColumnNames="id"/>
-            </column>
-            <column name="amount" type="numeric(18,2)" defaultValue="0.0">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
         <insert tableName="operation">
             <column name="type" value="ADDITION"/>
             <column name="cost" value="1.00"/>
@@ -81,6 +71,7 @@
             <column name="type" value="RANDOM_STRING"/>
             <column name="cost" value="5.00"/>
         </insert>
+
     </changeSet>
 
 </databaseChangeLog>

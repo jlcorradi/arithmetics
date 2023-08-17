@@ -24,7 +24,7 @@ public class RandomStringOperationExecutor implements OperationExecutor {
   public static final String NUMBER_OF_LINES_PARAM = "n";
   public static final String LENGTH_PARAM = "length";
   public static final String CHARACTERS_PARAM = "characters";
-  public static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+  public static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789[]{}()|?%$#@*";
 
   private final RandomOrgClient randomOrgClient;
 
