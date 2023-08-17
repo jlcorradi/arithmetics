@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
 
+import static dev.jlcorradi.Arithmetics.core.executors.OperationExecutionUtils.extractDouble;
+
 @Component
 @SupportsOperation(operation = OperationType.DIVISION, inputCount = 2)
 public class DivisionOperationExecutor implements OperationExecutor {
@@ -15,7 +17,7 @@ public class DivisionOperationExecutor implements OperationExecutor {
   public Object execute(Object[] input) {
     int decimalPlaces = input.length == 2 ? 2 : (Integer) input[2];
     DecimalFormat decimalFormat = new DecimalFormat("#." + "0".repeat(decimalPlaces));
-    double result = (Double) input[0] / (Double) input[1];
+    double result = extractDouble(input[0]) / extractDouble(input[1]);
     String roundedNumber = decimalFormat.format(result);
     return Double.valueOf(roundedNumber);
   }
@@ -26,7 +28,7 @@ public class DivisionOperationExecutor implements OperationExecutor {
     if (!validInputLength) {
       throw new BusinessException(MessageConstants.WRONG_INPUT_COUNT_ERR);
     }
-    if (Double.valueOf(0f).equals(input[1])) {
+    if (Double.valueOf(0f).equals(extractDouble(input[1]))) {
       throw new BusinessException(MessageConstants.DIVISION_BY_ZERO_ERR);
     }
   }

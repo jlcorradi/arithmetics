@@ -3,6 +3,11 @@ arithmetics:
     jwtSecret: "s3cr3t"
     jwtAccessTokenExpirationInMs: 86400000
 
+randomDotOrg:
+  apiUrl: "http://localhost:8079"
+  apiKey: "key"
+
+
 spring:
   datasource:
     url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1

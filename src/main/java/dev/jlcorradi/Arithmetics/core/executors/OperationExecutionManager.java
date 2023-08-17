@@ -22,7 +22,7 @@ public class OperationExecutionManager {
         );
   }
 
-  Object execute(OperationType operationType, Object[] input) {
+  public Object execute(OperationType operationType, Object[] input) {
     return Optional.ofNullable(executorMap.get(operationType))
         .map(operationExecutor -> {
           operationExecutor.validateInput(input);
