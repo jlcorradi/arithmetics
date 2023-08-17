@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static dev.jlcorradi.Arithmetics.core.executors.OperationExecutionUtils.extractInt;
 
@@ -36,14 +37,19 @@ public class RandomStringOperationExecutor implements OperationExecutor {
     RandomDotNetGenerateRandomStringRequest request = new RandomDotNetGenerateRandomStringRequest(
         RANDOM_DOT_ORG_VERSIION,
         RANDOM_DOT_ORG_METHOD,
-        Map.of(API_KEY_PARAM, randomDotOrgApiKey,
+        Map.of(API_KEY_PARAM, Optional.ofNullable(randomDotOrgApiKey).orElse(""),
             NUMBER_OF_LINES_PARAM, 1,
             LENGTH_PARAM, extractInt(input[0]),
             CHARACTERS_PARAM, ALPHABET),
         1L
     );
-    return randomOrgClient.generateRandomString(request)
-        .getGeneratedString();
+
+    try {
+      return randomOrgClient.generateRandomString(request)
+          .getGeneratedString();
+    } catch (Exception ex) {
+      throw new BusinessException(MessageConstants.RETRIEVING_RANDOM_STRING_ERR);
+    }
 
   }
 

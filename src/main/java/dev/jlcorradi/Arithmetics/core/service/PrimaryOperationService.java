@@ -1,9 +1,9 @@
 package dev.jlcorradi.Arithmetics.core.service;
 
-import dev.jlcorradi.Arithmetics.core.LowBalanceException;
+import dev.jlcorradi.Arithmetics.core.InsifficientBalanceException;
 import dev.jlcorradi.Arithmetics.core.commons.OperationType;
 import dev.jlcorradi.Arithmetics.core.commons.RecordStatus;
-import dev.jlcorradi.Arithmetics.core.repository.operationRepository;
+import dev.jlcorradi.Arithmetics.core.repository.OperationRepository;
 import dev.jlcorradi.Arithmetics.core.repository.RecordRepository;
 import dev.jlcorradi.Arithmetics.core.executors.OperationExecutionManager;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
@@ -24,7 +24,8 @@ import java.util.Date;
 public class PrimaryOperationService implements OperationService {
 
   @Getter
-  private final operationRepository repository;
+  private final OperationRepository repository;
+
   private final RecordRepository recordRepository;
   private final OperationExecutionManager operationExecutionManager;
   private final ArithmeticsUserService userService;
@@ -46,10 +47,12 @@ public class PrimaryOperationService implements OperationService {
     userService.updateBalance(user, userBalance);
 
     Record record = Record.builder()
+        .user(user)
         .date(new Date())
         .operation(operation)
         .operationResponse(result.toString())
-        .amount(userBalance)
+        .amount(operation.getCost())
+        .userBalance(userBalance)
         .build();
 
     return recordRepository.save(record);
@@ -57,7 +60,7 @@ public class PrimaryOperationService implements OperationService {
 
   private void validateUserBalance(BigDecimal userBalance, Operation operation) {
     if (userBalance.compareTo(operation.getCost()) <= 0) {
-      throw new LowBalanceException();
+      throw new InsifficientBalanceException();
     }
   }
 

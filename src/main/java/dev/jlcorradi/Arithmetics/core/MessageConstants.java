@@ -14,5 +14,5 @@ public class MessageConstants {
   public static final String RETRIEVING_RANDOM_STRING_ERR = "Error Retrieving Random String";
   public static final String INVALID_LENGTH_ERR = "Invalid Length";
   public static final String GENERIC_EXECUTION_ERR = "An error occurred while trying to execute the operation. Make sure the parameters are correct";
-  public static final String LOW_BALANCE_ERR = "Insufficient User Balance. Please, purchase more credits";
+  public static final String INSUFFICIENT_BALANCE_ERR = "Insufficient User Balance. Please, purchase more credits";
 }
