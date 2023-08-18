@@ -1,18 +1,18 @@
-package dev.jlcorradi.Arithmetics.core.repository;
+package dev.jlcorradi.Arithmetics.core.service;
 
+import dev.jlcorradi.Arithmetics.core.base.CrudService;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import dev.jlcorradi.Arithmetics.core.model.Record;
+import dev.jlcorradi.Arithmetics.core.repository.RecordRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
 
-public interface RecordRepository extends JpaRepository<Record, Long> {
-  Page<Record> findByUserAndDateBetween(
+public interface RecordService extends CrudService<Record, Long, RecordRepository> {
+  Page<Record> queryRecords(
       Pageable pageable,
       ArithmeticsUser user,
       LocalDate initDate,
-      LocalDate endDate
-  );
+      LocalDate endDate);
 }

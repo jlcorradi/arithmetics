@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -49,7 +49,7 @@ public class PrimaryOperationService implements OperationService {
 
     Record record = Record.builder()
         .user(user)
-        .date(new Date())
+        .date(LocalDate.now())
         .operation(operation)
         .operationResponse(result.toString())
         .amount(operation.getCost())

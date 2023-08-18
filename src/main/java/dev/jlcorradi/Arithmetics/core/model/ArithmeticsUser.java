@@ -30,7 +30,8 @@ public class ArithmeticsUser implements SoftDeletable, UserDetails {
   private String password;
 
   @Enumerated(EnumType.STRING)
-  private RecordStatus status;
+  @Builder.Default
+  private RecordStatus status = RecordStatus.ACTIVE;
 
   @Column(name = "user_balance")
   private BigDecimal userBalance;

@@ -4,20 +4,20 @@ import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import dev.jlcorradi.Arithmetics.core.service.ArithmeticsUserService;
 import dev.jlcorradi.Arithmetics.web.HeaderMessageType;
-import dev.jlcorradi.Arithmetics.web.HttpUtils;
 import dev.jlcorradi.Arithmetics.web.Paths;
+import dev.jlcorradi.Arithmetics.web.utils.HttpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
-import static dev.jlcorradi.Arithmetics.web.HttpUtils.getLoggedinUser;
+import static dev.jlcorradi.Arithmetics.web.utils.HttpUtils.getLoggedinUser;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(Paths.USER_V1)
-public class ArithmeticsUserApi {
+public class UserApi {
 
   private final ArithmeticsUserService userService;
 

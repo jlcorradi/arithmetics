@@ -1,8 +1,9 @@
-package dev.jlcorradi.Arithmetics.web;
+package dev.jlcorradi.Arithmetics.web.utils;
 
 import dev.jlcorradi.Arithmetics.core.BusinessException;
 import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
+import dev.jlcorradi.Arithmetics.web.HeaderMessageType;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

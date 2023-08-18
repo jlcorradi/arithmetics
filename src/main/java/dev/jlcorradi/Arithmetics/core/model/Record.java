@@ -1,5 +1,7 @@
 package dev.jlcorradi.Arithmetics.core.model;
 
+import dev.jlcorradi.Arithmetics.core.base.SoftDeletable;
+import dev.jlcorradi.Arithmetics.core.commons.RecordStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +17,7 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "record")
-public class Record {
+public class Record implements SoftDeletable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +39,10 @@ public class Record {
   @Column(name = "operation_response")
   private String operationResponse;
 
-  private Date date;
+  private LocalDate date;
+
+  @Builder.Default
+  @Enumerated(EnumType.STRING)
+  private RecordStatus status = RecordStatus.ACTIVE;
 
 }

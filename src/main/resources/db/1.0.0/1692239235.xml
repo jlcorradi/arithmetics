@@ -45,6 +45,9 @@
             <column name="date" type="date">
                 <constraints nullable="false"/>
             </column>
+            <column name="status" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <insert tableName="operation">

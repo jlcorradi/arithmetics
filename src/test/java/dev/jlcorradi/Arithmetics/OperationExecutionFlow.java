@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import dev.jlcorradi.Arithmetics.core.service.ArithmeticsUserService;
 import dev.jlcorradi.Arithmetics.web.Paths;
-import dev.jlcorradi.Arithmetics.web.api.OperationExecutionApi;
+import dev.jlcorradi.Arithmetics.web.api.ExecutionsApi;
 import dev.jlcorradi.Arithmetics.web.security.JwtAuthApi;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -35,7 +35,7 @@ public class OperationExecutionFlow {
   JwtAuthApi authApi;
 
   @Autowired
-  OperationExecutionApi operationExecutionApi;
+  ExecutionsApi executionsApi;
 
   @Autowired
   ArithmeticsUserService userService;
@@ -47,7 +47,7 @@ public class OperationExecutionFlow {
   @BeforeEach
   void seup() {
     wireMockServer.start();
-    mockMvc = MockMvcBuilders.standaloneSetup(authApi, operationExecutionApi).build();
+    mockMvc = MockMvcBuilders.standaloneSetup(authApi, executionsApi).build();
   }
 
   @AfterEach

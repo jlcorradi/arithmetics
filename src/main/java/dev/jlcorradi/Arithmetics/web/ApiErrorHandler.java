@@ -2,6 +2,7 @@ package dev.jlcorradi.Arithmetics.web;
 
 import dev.jlcorradi.Arithmetics.core.BusinessException;
 import dev.jlcorradi.Arithmetics.core.MessageConstants;
+import dev.jlcorradi.Arithmetics.web.utils.HttpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
