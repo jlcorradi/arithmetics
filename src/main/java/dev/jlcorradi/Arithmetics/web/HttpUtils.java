@@ -1,5 +1,7 @@
 package dev.jlcorradi.Arithmetics.web;
 
+import dev.jlcorradi.Arithmetics.core.BusinessException;
+import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
@@ -48,9 +50,10 @@ public class HttpUtils {
    * @return An Optional containing the logged-in user's details if available,
    * or an empty Optional if not logged in or details are not available.
    */
-  public static Optional<ArithmeticsUser> getLoggedinUser() {
+  public static ArithmeticsUser getLoggedinUser() {
     return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getDetails())
-        .map(o -> (ArithmeticsUser) o);
+        .map(o -> (ArithmeticsUser) o)
+        .orElseThrow(() -> new BusinessException(MessageConstants.ACCESS_DENIED_ERR));
   }
 }
 

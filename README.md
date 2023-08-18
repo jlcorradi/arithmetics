@@ -110,3 +110,4 @@ application extends support for the following headers:
 - Integrate Hystrix to ensure failfast integration with Random.org.
 - Expand functionality by implementing support for OpenAPI. This enhancement will provide enhanced visibility into the
   implemented APIs.
+- I18n - Support for multiple languages
