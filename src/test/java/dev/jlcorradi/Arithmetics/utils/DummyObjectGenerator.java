@@ -7,6 +7,7 @@ import dev.jlcorradi.Arithmetics.core.model.Operation;
 import dev.jlcorradi.Arithmetics.core.webclient.randomdotnet.RandomDotNetGenerateRandomStringResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.math.BigDecimal;
 
@@ -31,15 +32,16 @@ public class DummyObjectGenerator {
   }
 
   public static ArithmeticsUser user(FluentEditor<ArithmeticsUser.ArithmeticsUserBuilder> editor) {
+    String password = new BCryptPasswordEncoder().encode("password");
     ArithmeticsUser.ArithmeticsUserBuilder builder = ArithmeticsUser.builder()
         .id(1L)
         .email("testuser@jlcorradi.dev")
-        .password("password")
+        .password(password)
         .status(RecordStatus.ACTIVE)
         .userBalance(BigDecimal.TEN);
 
-    return editor.edit(builder)
-        .build();
+    return editor.edit(builder).build();
+
   }
 
   public static Operation operation(FluentEditor<Operation.OperationBuilder> editor) {

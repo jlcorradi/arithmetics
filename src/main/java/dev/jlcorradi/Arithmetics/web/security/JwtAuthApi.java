@@ -15,7 +15,7 @@ import static dev.jlcorradi.Arithmetics.web.Paths.API_AUTH_V1;
 @RestController
 @RequestMapping(API_AUTH_V1)
 @AllArgsConstructor
-public class JwtAuthController {
+public class JwtAuthApi {
 
   private final AuthenticationService authenticationService;
 

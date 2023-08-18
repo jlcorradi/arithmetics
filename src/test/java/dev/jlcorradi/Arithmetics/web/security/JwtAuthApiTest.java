@@ -24,12 +24,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @ExtendWith(MockitoExtension.class)
-class JwtAuthControllerTest {
+class JwtAuthApiTest {
 
   @Mock
   AuthenticationManager authenticationManager;
 
-  JwtAuthController authController;
+  JwtAuthApi authController;
   JwtTokenService jwtTokenService;
   MockMvc mockMvc;
   AuthenticationService authenticationService;
@@ -40,7 +40,7 @@ class JwtAuthControllerTest {
     ReflectionTestUtils.setField(jwtTokenService, "jwtSecret", "s3cr3t");
     ReflectionTestUtils.setField(jwtTokenService, "accessTokenExpirationInMs", 3600);
     authenticationService = new AuthenticationService(authenticationManager, jwtTokenService);
-    authController = new JwtAuthController(authenticationService);
+    authController = new JwtAuthApi(authenticationService);
     mockMvc = MockMvcBuilders.standaloneSetup(authController).build();
   }
 

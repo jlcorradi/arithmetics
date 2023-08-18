@@ -7,4 +7,5 @@ import lombok.NoArgsConstructor;
 public class Paths {
   public static final  String API_AUTH_V1 = "/api/v1/auth";
   public static final String OPERATION_V1 = "/api/v1/executions";
+  public static final String USER_V1 = "/api/v1/users";
 }
