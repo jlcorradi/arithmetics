@@ -16,7 +16,7 @@
             <column name="cost" type="numeric(18,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" type="varchar(30)" defaultOnNull="true" defaultValue="ACTIVE" >
+            <column name="status" type="varchar(30)" >
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -50,26 +50,32 @@
         <insert tableName="operation">
             <column name="type" value="ADDITION"/>
             <column name="cost" value="1.00"/>
+            <column name="status" value="ACTIVE"/>
         </insert>
         <insert tableName="operation">
             <column name="type" value="SUBTRACTION"/>
             <column name="cost" value="1.00"/>
+            <column name="status" value="ACTIVE"/>
         </insert>
         <insert tableName="operation">
             <column name="type" value="MULTIPLICATION"/>
             <column name="cost" value="2.00"/>
+            <column name="status" value="ACTIVE"/>
         </insert>
         <insert tableName="operation">
             <column name="type" value="DIVISION"/>
             <column name="cost" value="2.00"/>
+            <column name="status" value="ACTIVE"/>
         </insert>
         <insert tableName="operation">
             <column name="type" value="SQUARE_ROOT"/>
             <column name="cost" value="4.00"/>
+            <column name="status" value="ACTIVE"/>
         </insert>
         <insert tableName="operation">
             <column name="type" value="RANDOM_STRING"/>
             <column name="cost" value="5.00"/>
+            <column name="status" value="ACTIVE"/>
         </insert>
 
     </changeSet>

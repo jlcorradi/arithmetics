@@ -3,12 +3,12 @@ package dev.jlcorradi.Arithmetics.core.service;
 import dev.jlcorradi.Arithmetics.core.InsifficientBalanceException;
 import dev.jlcorradi.Arithmetics.core.commons.OperationType;
 import dev.jlcorradi.Arithmetics.core.commons.RecordStatus;
-import dev.jlcorradi.Arithmetics.core.repository.OperationRepository;
-import dev.jlcorradi.Arithmetics.core.repository.RecordRepository;
 import dev.jlcorradi.Arithmetics.core.executors.OperationExecutionManager;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import dev.jlcorradi.Arithmetics.core.model.Operation;
 import dev.jlcorradi.Arithmetics.core.model.Record;
+import dev.jlcorradi.Arithmetics.core.repository.OperationRepository;
+import dev.jlcorradi.Arithmetics.core.repository.RecordRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,8 @@ public class PrimaryOperationService implements OperationService {
 
   @Override
   public Record execute(ArithmeticsUser user, OperationType operationType, Object[] params) {
-    Operation operation = repository.findOneByTypeAndStatus(operationType, RecordStatus.ACTIVE)
+    Operation operation = repository.findByType(operationType)
+        .filter(op -> RecordStatus.ACTIVE.equals(op.getStatus()))
         .orElseThrow(EntityNotFoundException::new);
 
     BigDecimal userBalance = user.getUserBalance();
@@ -59,7 +60,7 @@ public class PrimaryOperationService implements OperationService {
   }
 
   private void validateUserBalance(BigDecimal userBalance, Operation operation) {
-    if (userBalance.compareTo(operation.getCost()) <= 0) {
+    if (userBalance.compareTo(operation.getCost()) < 0) {
       throw new InsifficientBalanceException();
     }
   }

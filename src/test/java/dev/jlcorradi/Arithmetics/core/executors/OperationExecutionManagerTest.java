@@ -4,7 +4,6 @@ import dev.jlcorradi.Arithmetics.core.BusinessException;
 import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import dev.jlcorradi.Arithmetics.core.commons.OperationType;
 import jdk.jfr.Description;
-import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,13 +1,3 @@
-arithmetics:
-  security:
-    jwtSecret: "VGhpcyBpcyBhIHByb2plY3QgdG8gYmUgZXZhbHVhdGVkIGZvciB0aGUgSmF2YSBEZXZlbG9wZXIgcG9zaXRpb24gYXQgVHJ1ZU5vcnRoCg=="
-    jwtAccessTokenExpirationInMs: 86400000
-
-randomDotOrg:
-  apiUrl: "https://api.random.org"
-  apiKey: "25775a38-5c88-42a7-8780-aa5bd9bc8b20"
-
-
 spring:
   liquibase:
     enabled: true
@@ -16,12 +6,31 @@ spring:
     hibernate:
       ddl-auto: none
 
+
+arithmetics:
+  demo-user:
+    email: demouser@jlcorradi.dev
+    password: password
+    balance: 50
+  security:
+    jwtSecret: "VGhpcyBpcyBhIHByb2plY3QgdG8gYmUgZXZhbHVhdGVkIGZvciB0aGUgSmF2YSBEZXZlbG9wZXIgcG9zaXRpb24gYXQgVHJ1ZU5vcnRoCg=="
+    jwtAccessTokenExpirationInMs: 86400000
+
+randomDotOrg:
+  apiUrl: "https://api.random.org"
+  apiKey: "25775a38-5c88-42a7-8780-aa5bd9bc8b20"
+
 ---
 spring:
   config:
     activate:
       on-profile: dev
 
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/arithmetics?allowPublicKeyRetrieval=true&useSSL=false
     username: arithmetics

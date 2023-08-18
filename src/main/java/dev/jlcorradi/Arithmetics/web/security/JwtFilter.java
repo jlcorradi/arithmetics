@@ -1,6 +1,7 @@
 package dev.jlcorradi.Arithmetics.web.security;
 
 import dev.jlcorradi.Arithmetics.core.MessageConstants;
+import dev.jlcorradi.Arithmetics.web.Paths;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,23 +38,32 @@ public class JwtFilter extends OncePerRequestFilter {
       throws ServletException, IOException,
       AccountStatusException {
     try {
-      String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-      String jwt = StringUtils.hasText(token) && token.startsWith(BEARER_) ? token.substring(7) : null;
+      if (request.getServletPath().contains(Paths.API_AUTH_V1)) {
+        filterChain.doFilter(request, response);
+        return;
+      }
+
+      String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+      String jwt = StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_) ? authHeader.substring(7) : null;
+
+      if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        filterChain.doFilter(request, response);
+        return;
+      }
 
       if (StringUtils.hasText(jwt) && jwtProvider.isValidToken(jwt)) {
         String username = jwtProvider.getUsernameFromJWT(jwt);
 
         UserDetails userDetails = userService.loadUserByUsername(username);
-        UsernamePasswordAuthenticationToken authentication =
+        UsernamePasswordAuthenticationToken authToken =
             new UsernamePasswordAuthenticationToken(
                 userDetails.getUsername(),
                 null,
                 userDetails.getAuthorities()
             );
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        authentication.setDetails(userDetails);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        authToken.setDetails(userDetails);
+        SecurityContextHolder.getContext().setAuthentication(authToken);
       }
     } catch (Exception ex) {
       throw new BadCredentialsException(MessageConstants.ACCESS_DENIED_ERR);

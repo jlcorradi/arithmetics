@@ -21,7 +21,7 @@ public class ApiErrorHandler {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<?> handleException(Exception ex) {
-    log.warn("Handling Uncaught: {}", ex.getMessage());
+    log.error("Handling Uncaught:", ex);
     HttpUtils.addHeaderMessage(HeaderMessageType.ERROR, ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(MessageConstants.GENERIC_EXECUTION_ERR));
   }

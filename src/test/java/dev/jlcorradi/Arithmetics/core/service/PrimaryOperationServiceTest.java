@@ -4,7 +4,6 @@ import dev.jlcorradi.Arithmetics.core.BusinessException;
 import dev.jlcorradi.Arithmetics.core.InsifficientBalanceException;
 import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import dev.jlcorradi.Arithmetics.core.commons.OperationType;
-import dev.jlcorradi.Arithmetics.core.commons.RecordStatus;
 import dev.jlcorradi.Arithmetics.core.executors.*;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import dev.jlcorradi.Arithmetics.core.model.Record;
@@ -74,7 +73,7 @@ class PrimaryOperationServiceTest {
     // GIVEN
     ArithmeticsUser user = user(x -> x.userBalance(BigDecimal.TEN));
 
-    when(operationRepository.findOneByTypeAndStatus(OperationType.ADDITION, RecordStatus.ACTIVE))
+    when(operationRepository.findByType(OperationType.ADDITION))
         .thenReturn(Optional.ofNullable(operation(x -> x.type(OperationType.ADDITION).cost(BigDecimal.ONE))));
 
     // WHEN
@@ -93,7 +92,7 @@ class PrimaryOperationServiceTest {
     // GIVEN
     ArithmeticsUser user = user(x -> x.userBalance(BigDecimal.TEN));
 
-    when(operationRepository.findOneByTypeAndStatus(OperationType.RANDOM_STRING, RecordStatus.ACTIVE))
+    when(operationRepository.findByType(OperationType.RANDOM_STRING))
         .thenReturn(Optional.ofNullable(operation(x -> x.type(OperationType.ADDITION).cost(BigDecimal.ONE))));
 
     when(randomClientFeign.generateRandomString(any()))
@@ -115,7 +114,7 @@ class PrimaryOperationServiceTest {
     // GIVEN
     ArithmeticsUser user = user(x -> x.userBalance(BigDecimal.ONE));
 
-    when(operationRepository.findOneByTypeAndStatus(OperationType.ADDITION, RecordStatus.ACTIVE))
+    when(operationRepository.findByType(OperationType.ADDITION))
         .thenReturn(Optional.ofNullable(operation(x -> x.type(OperationType.ADDITION).cost(BigDecimal.ONE))));
 
     // WHEN

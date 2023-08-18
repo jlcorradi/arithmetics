@@ -18,7 +18,7 @@ import java.util.Date;
 public class Record {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @OneToOne

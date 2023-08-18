@@ -27,5 +27,6 @@ public class Operation implements SoftDeletable {
 
   private BigDecimal cost;
 
+  @Enumerated(EnumType.STRING)
   private RecordStatus status;
 }

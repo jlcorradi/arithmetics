@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ArithmeticsUserRepository extends JpaRepository<ArithmeticsUser, Long> {
 
   @Modifying
-  @Query(value = "update user_balance set amount=:amount where user_id = :userId", nativeQuery = true)
+  @Query(value = "update arithmetics_user set user_balance=:amount where id = :userId", nativeQuery = true)
   void updateUserBalance(@Param("userId") Long userId, @Param("amount") BigDecimal amount);
 
   Optional<ArithmeticsUser> findOneByEmail(String username);

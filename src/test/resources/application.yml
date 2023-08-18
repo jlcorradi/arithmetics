@@ -1,4 +1,8 @@
 arithmetics:
+  demo-user:
+    email: demouser@jlcorradi.dev
+    password: password
+    balance: 50
   security:
     jwtSecret: "s3cr3t"
     jwtAccessTokenExpirationInMs: 86400000
