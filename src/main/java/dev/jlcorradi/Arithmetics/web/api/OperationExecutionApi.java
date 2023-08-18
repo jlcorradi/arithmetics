@@ -25,13 +25,13 @@ public class OperationExecutionApi {
 
   private final OperationService operationService;
 
-  record OperationRequest(
+  private record OperationRequest(
       OperationType type,
       Object[] params
   ) {
   }
 
-  record OperationResponse(
+  private record OperationResponse(
       Long id,
       Date date,
       String operationDescription,
