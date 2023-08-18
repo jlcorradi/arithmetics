@@ -10,6 +10,9 @@ include Addition, Subtraction, Multiplication, Division, Square Root calculation
 Strings.
 
 ## Requirements
+- docker and docker-compose
+- java 17
+- maven
 
 ### Running the Application
 
