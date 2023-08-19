@@ -11,8 +11,7 @@ import java.util.Optional;
 public interface OperationExecutor {
 
   default void validateInput(Object[] input) {
-    SupportsOperation annotation = AnnotationUtils.findAnnotation(getClass(), SupportsOperation.class);
-    assert annotation != null;
+    SupportsOperation annotation = getOperationMetadata();
     int expectedInputCount = annotation.inputCount();
     if (expectedInputCount != input.length) {
       throw new BusinessException(MessageConstants.WRONG_INPUT_COUNT_ERR);
@@ -33,8 +32,12 @@ public interface OperationExecutor {
   }
 
   default OperationType getSupportedOperation() {
+    return getOperationMetadata().operation();
+  }
+
+  default SupportsOperation getOperationMetadata() {
     SupportsOperation annotation = AnnotationUtils.findAnnotation(getClass(), SupportsOperation.class);
     assert annotation != null;
-    return annotation.operation();
+    return annotation;
   }
 }

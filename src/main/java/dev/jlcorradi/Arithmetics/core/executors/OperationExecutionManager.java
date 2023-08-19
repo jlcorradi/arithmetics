@@ -30,4 +30,9 @@ public class OperationExecutionManager {
         })
         .orElseThrow(() -> new BusinessException(MessageConstants.UNSUPPORTED_OPERATION_ERR));
   }
+
+  public SupportsOperation getMetadata(OperationType operationType) {
+    return executorMap.get(operationType)
+        .getOperationMetadata();
+  }
 }

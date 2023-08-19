@@ -16,8 +16,8 @@
             <column name="cost" type="numeric(18,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" type="varchar(30)" >
-                <constraints nullable="false" />
+            <column name="status" type="varchar(30)">
+                <constraints nullable="false"/>
             </column>
         </createTable>
 
@@ -33,6 +33,9 @@
                 <constraints nullable="false" foreignKeyName="fk_record_user" referencedTableName="arithmetics_user"
                              referencedColumnNames="id"/>
             </column>
+            <column name="description" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
             <column name="amount" type="numeric(18,2)">
                 <constraints nullable="false"/>
             </column>
@@ -42,7 +45,7 @@
             <column name="operation_response" type="varchar(2000)">
                 <constraints nullable="false"/>
             </column>
-            <column name="date" type="date">
+            <column name="date" type="datetime">
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="varchar(30)">

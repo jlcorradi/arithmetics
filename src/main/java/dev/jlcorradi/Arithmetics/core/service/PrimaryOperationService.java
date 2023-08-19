@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -47,9 +49,15 @@ public class PrimaryOperationService implements OperationService {
 
     userService.updateBalance(user, userBalance);
 
+    String description = String.format("%s (%s)", operationType.getDescription(),
+        Arrays.stream(params)
+            .map(String::valueOf)
+            .collect(Collectors.joining(", ")));
+
     Record record = Record.builder()
         .user(user)
         .date(LocalDate.now())
+        .description(description)
         .operation(operation)
         .operationResponse(result.toString())
         .amount(operation.getCost())

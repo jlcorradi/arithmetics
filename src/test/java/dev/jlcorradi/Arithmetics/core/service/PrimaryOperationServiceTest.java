@@ -115,7 +115,7 @@ class PrimaryOperationServiceTest {
     ArithmeticsUser user = user(x -> x.userBalance(BigDecimal.ONE));
 
     when(operationRepository.findByType(OperationType.ADDITION))
-        .thenReturn(Optional.ofNullable(operation(x -> x.type(OperationType.ADDITION).cost(BigDecimal.ONE))));
+        .thenReturn(Optional.ofNullable(operation(x -> x.type(OperationType.ADDITION).cost(BigDecimal.valueOf(2D)))));
 
     // WHEN
     InsifficientBalanceException ex = assertThrows(InsifficientBalanceException.class, () -> subject.execute(user, OperationType.ADDITION, new Object[]{10D, 5D}));

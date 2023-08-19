@@ -1,10 +1,13 @@
 package dev.jlcorradi.Arithmetics.web.api;
 
+import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import dev.jlcorradi.Arithmetics.core.commons.OperationType;
 import dev.jlcorradi.Arithmetics.core.model.Record;
 import dev.jlcorradi.Arithmetics.core.service.OperationService;
 import dev.jlcorradi.Arithmetics.core.service.RecordService;
+import dev.jlcorradi.Arithmetics.web.HeaderMessageType;
 import dev.jlcorradi.Arithmetics.web.Paths;
+import dev.jlcorradi.Arithmetics.web.utils.HttpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -48,6 +51,8 @@ public class ExecutionsApi {
   @PostMapping
   public ResponseEntity<OperationResponse> executeOperation(@RequestBody OperationRequest request) {
     Record result = operationService.execute(getLoggedinUser(), request.type, request.params);
+
+    HttpUtils.addHeaderMessage(HeaderMessageType.SUCCESS, MessageConstants.OPERATION_SUCCESS_MSG);
 
     return ResponseEntity.ok(
         new OperationResponse(

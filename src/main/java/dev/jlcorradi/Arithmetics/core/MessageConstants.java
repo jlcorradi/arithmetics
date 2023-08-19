@@ -16,4 +16,5 @@ public class MessageConstants {
   public static final String GENERIC_EXECUTION_ERR = "An error occurred while trying to execute the operation. Make sure the parameters are correct";
   public static final String INSUFFICIENT_BALANCE_ERR = "Insufficient User Balance. Please, purchase more credits";
   public static final String BALANCE_ADDED_MSG = "Balance Added Successfully. Your new balancd: $%.2f";
+  public static final String OPERATION_SUCCESS_MSG = "Operation Executed Successfully";
 }

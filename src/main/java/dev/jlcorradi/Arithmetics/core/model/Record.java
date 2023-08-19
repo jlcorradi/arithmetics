@@ -31,6 +31,8 @@ public class Record implements SoftDeletable {
   @JoinColumn(name = "user_id")
   private ArithmeticsUser user;
 
+  private String description;
+
   private BigDecimal amount;
 
   @Column(name = "user_balance")
