@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -56,7 +56,7 @@ public class PrimaryOperationService implements OperationService {
 
     Record record = Record.builder()
         .user(user)
-        .date(LocalDate.now())
+        .date(LocalDateTime.now())
         .description(description)
         .operation(operation)
         .operationResponse(result.toString())

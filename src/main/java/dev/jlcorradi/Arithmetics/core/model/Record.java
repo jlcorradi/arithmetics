@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -41,7 +41,7 @@ public class Record implements SoftDeletable {
   @Column(name = "operation_response")
   private String operationResponse;
 
-  private LocalDate date;
+  private LocalDateTime date;
 
   @Builder.Default
   @Enumerated(EnumType.STRING)

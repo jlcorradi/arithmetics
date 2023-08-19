@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class ExecutionsApi {
 
   public record OperationResponse(
       Long id,
-      LocalDate date,
+      LocalDateTime date,
       String operationDescription,
       BigDecimal price,
       BigDecimal userBalance,
@@ -58,7 +59,7 @@ public class ExecutionsApi {
         new OperationResponse(
             result.getId(),
             result.getDate(),
-            result.getOperation().getType().getDescription(),
+            result.getDescription(),
             result.getAmount(),
             result.getUserBalance(),
             result.getOperationResponse()
@@ -78,7 +79,7 @@ public class ExecutionsApi {
     LocalDate initDate = resolveDateOrDefault(params.get("initDate"),
         () -> LocalDate.now().minusMonths(1L));
 
-    LocalDate endDate = resolveDateOrDefault(params.get("endDate"), LocalDate::now);
+    LocalDate endDate = resolveDateOrDefault(params.get("endDate"), LocalDate::now).plusDays(1);
 
     Page<Record> records = recordService.queryRecords(pageRequest, getLoggedinUser(), initDate, endDate);
     return ResponseEntity.ok(
@@ -87,12 +88,14 @@ public class ExecutionsApi {
                 .map(record -> new OperationResponse(
                     record.getId(),
                     record.getDate(),
-                    record.getOperation().getType().getDescription(),
+                    record.getDescription(),
                     record.getAmount(),
                     record.getUserBalance(),
                     record.getOperationResponse()))
                 .collect(Collectors.toList()),
-            pageRequest, records.getTotalElements())
+            pageRequest,
+            records.getTotalElements()
+        )
     );
   }
 
