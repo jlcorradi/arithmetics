@@ -17,4 +17,5 @@ public class MessageConstants {
   public static final String INSUFFICIENT_BALANCE_ERR = "Insufficient User Balance. Please, purchase more credits";
   public static final String BALANCE_ADDED_MSG = "Balance Added Successfully. Your new balancd: $%.2f";
   public static final String OPERATION_SUCCESS_MSG = "Operation Executed Successfully";
+  public static final String DELETED_SUCCESS_MSG = "Execution Record deleted successfully";
 }

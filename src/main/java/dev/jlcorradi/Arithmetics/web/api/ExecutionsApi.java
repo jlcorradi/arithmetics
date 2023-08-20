@@ -17,9 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static dev.jlcorradi.Arithmetics.web.utils.DateUtils.resolveDateOrDefault;
@@ -30,6 +32,9 @@ import static dev.jlcorradi.Arithmetics.web.utils.HttpUtils.getLoggedinUser;
 @RequestMapping(Paths.EXECUTIONS_V1)
 public class ExecutionsApi {
 
+  public static final String DATE_INI_PARAM = "dateIni";
+  public static final String DATE_END_PARAM = "dateEnd";
+  public static final String DESCRIPTION_PARAM = "description";
   private final OperationService operationService;
   private final RecordService recordService;
 
@@ -42,7 +47,7 @@ public class ExecutionsApi {
   public record OperationResponse(
       Long id,
       LocalDateTime date,
-      String operationDescription,
+      String description,
       BigDecimal price,
       BigDecimal userBalance,
       String result
@@ -72,16 +77,18 @@ public class ExecutionsApi {
       @RequestParam(value = "page", defaultValue = "0") Integer page,
       @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
       @RequestParam(value = "order", defaultValue = "date") String order,
-      @RequestParam(value = "isAscending", defaultValue = "true") Boolean isAscending,
       @RequestParam Map<String, String> params) {
-    PageRequest pageRequest = PageRequest.of(page, pageSize, Sort.by(isAscending ? Sort.Order.asc(order) : Sort.Order.desc(order)));
+    PageRequest pageRequest = PageRequest.of(page, pageSize, resolveSorting(order));
 
-    LocalDate initDate = resolveDateOrDefault(params.get("initDate"),
-        () -> LocalDate.now().minusMonths(1L));
+    LocalDateTime initDate = resolveDateOrDefault(params.get(DATE_INI_PARAM),
+        () -> LocalDateTime.now().minusMonths(1L));
 
-    LocalDate endDate = resolveDateOrDefault(params.get("endDate"), LocalDate::now).plusDays(1);
+    LocalDateTime endDate = resolveDateOrDefault(params.get(DATE_END_PARAM), LocalDateTime::now).plusDays(1);
 
-    Page<Record> records = recordService.queryRecords(pageRequest, getLoggedinUser(), initDate, endDate);
+    String description = Optional.ofNullable(params.get(DESCRIPTION_PARAM))
+        .orElse("");
+
+    Page<Record> records = recordService.queryRecords(pageRequest, getLoggedinUser(), initDate, endDate, description);
     return ResponseEntity.ok(
         new PageImpl<>(
             records.getContent().stream()
@@ -97,6 +104,26 @@ public class ExecutionsApi {
             records.getTotalElements()
         )
     );
+  }
+
+  @DeleteMapping("/{id}")
+  public void deleteRecord(@PathVariable("id") Long id) {
+    recordService.delete(id);
+    HttpUtils.addHeaderMessage(HeaderMessageType.SUCCESS, MessageConstants.DELETED_SUCCESS_MSG);
+  }
+
+  private Sort resolveSorting(String order) {
+    Pattern pattern = Pattern.compile("^(.*?)(:ASC|:DESC)?$");
+    Matcher matcher = pattern.matcher(order);
+    boolean isMatch = matcher.matches();
+
+    if (!isMatch) {
+      return Sort.by(order);
+    }
+
+    return ":DESC".equals(matcher.group(2)) ?
+        Sort.by(matcher.group(1)).descending() :
+        Sort.by(matcher.group(1)).ascending();
   }
 
 }

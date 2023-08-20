@@ -7,12 +7,14 @@ import dev.jlcorradi.Arithmetics.core.repository.RecordRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public interface RecordService extends CrudService<Record, Long, RecordRepository> {
   Page<Record> queryRecords(
       Pageable pageable,
       ArithmeticsUser user,
-      LocalDate initDate,
-      LocalDate endDate);
+      LocalDateTime initDate,
+      LocalDateTime endDate,
+      String description
+  );
 }
