@@ -21,9 +21,6 @@ public class UserApi {
 
   private final ArithmeticsUserService userService;
 
-  public record AddBalanceRequest(BigDecimal amount) {
-  }
-
   @PutMapping("/balance")
   void addBalance(@RequestBody AddBalanceRequest request) {
     ArithmeticsUser loggedinUser = getLoggedinUser();
@@ -32,15 +29,18 @@ public class UserApi {
     HttpUtils.addHeaderMessage(HeaderMessageType.SUCCESS, String.format(MessageConstants.BALANCE_ADDED_MSG, newBalance));
   }
 
-  public record GetUserDataResponse(String email, BigDecimal userBalance) {
-  }
-
   @GetMapping
   public ResponseEntity<GetUserDataResponse> getUserData() {
     ArithmeticsUser user = getLoggedinUser();
     return ResponseEntity.ok(
         new GetUserDataResponse(user.getEmail(), user.getUserBalance())
     );
+  }
+
+  public record AddBalanceRequest(BigDecimal amount) {
+  }
+
+  public record GetUserDataResponse(String email, BigDecimal userBalance) {
   }
 
 }

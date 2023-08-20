@@ -38,22 +38,6 @@ public class ExecutionsApi {
   private final OperationService operationService;
   private final RecordService recordService;
 
-  public record OperationRequest(
-      OperationType type,
-      Object[] params
-  ) {
-  }
-
-  public record OperationResponse(
-      Long id,
-      LocalDateTime date,
-      String description,
-      BigDecimal price,
-      BigDecimal userBalance,
-      String result
-  ) {
-  }
-
   @PostMapping
   public ResponseEntity<OperationResponse> executeOperation(@RequestBody OperationRequest request) {
     Record result = operationService.execute(getLoggedinUser(), request.type, request.params);
@@ -124,6 +108,22 @@ public class ExecutionsApi {
     return ":DESC".equals(matcher.group(2)) ?
         Sort.by(matcher.group(1)).descending() :
         Sort.by(matcher.group(1)).ascending();
+  }
+
+  public record OperationRequest(
+      OperationType type,
+      Object[] params
+  ) {
+  }
+
+  public record OperationResponse(
+      Long id,
+      LocalDateTime date,
+      String description,
+      BigDecimal price,
+      BigDecimal userBalance,
+      String result
+  ) {
   }
 
 }

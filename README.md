@@ -10,11 +10,32 @@ include Addition, Subtraction, Multiplication, Division, Square Root calculation
 Strings.
 
 ## Requirements
+
 - docker and docker-compose
 - java 17
 - maven
 
-### Running the Application
+## Running the Application
+
+### Running locally with jdk 17 and maven
+
+This project brings in the spring-boot-docker-compose feature which spins up containers for dependencies on run. To
+package the application with it you also need to set the maven profile to ```docker-compose``. If you
+want to start the application that way simply run:
+
+```shell
+ mvn spring-boot:run -Pdocker-compose -Dspring.profiles.active=dev
+```
+
+By doing that it will run with the ```dev``` profile set which will spin up a mysql container.
+
+You can achieve the same running it from inside Intellij IDEA or your IDE of choice. You need to set the
+profile ```dev``` the same way:
+
+![](misc/config_run_application.png)
+
+You can also run as spring-boot with the following configuration:
+![](misc/config_run_maven.png)
 
 ### Project Structure
 

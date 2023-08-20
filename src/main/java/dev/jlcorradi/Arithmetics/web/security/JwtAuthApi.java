@@ -22,9 +22,6 @@ public class JwtAuthApi {
 
   private final AuthenticationService authenticationService;
 
-  public record LoginResponse(String access_token) {
-  }
-
   @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public ResponseEntity<LoginResponse> login(String username, String password) {
     LoginResponse response;
@@ -35,5 +32,8 @@ public class JwtAuthApi {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
     return ResponseEntity.ok(response);
+  }
+
+  public record LoginResponse(String access_token) {
   }
 }

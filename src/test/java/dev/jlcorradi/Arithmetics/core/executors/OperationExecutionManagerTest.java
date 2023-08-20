@@ -25,6 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     SquareRootOperationExecutor.class}
 )
 class OperationExecutionManagerTest {
+  @Autowired
+  OperationExecutionManager subject;
+
   static Stream<Arguments> provideArguments() {
     return Stream.of(
         Arguments.of(OperationType.ADDITION, new Object[]{5D, 6D}, 11D),
@@ -36,9 +39,6 @@ class OperationExecutionManagerTest {
         Arguments.of(OperationType.SQUARE_ROOT, new Object[]{625D}, 25D)
     );
   }
-
-  @Autowired
-  OperationExecutionManager subject;
 
   @ParameterizedTest
   @MethodSource("provideArguments")

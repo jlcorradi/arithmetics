@@ -22,13 +22,6 @@ public class OperationsApi {
   private final OperationExecutionManager manager;
   private final OperationService operationService;
 
-  public record OperationsResponse(
-      OperationType operationType,
-      String description,
-      int paramsQuantity,
-      BigDecimal cost) {
-  }
-
   @GetMapping
   public ResponseEntity<List<OperationsResponse>> listAvailableOperations() {
     List<OperationsResponse> operations = operationService.list().stream()
@@ -43,6 +36,13 @@ public class OperationsApi {
         })
         .collect(Collectors.toList());
     return ResponseEntity.ok(operations);
+  }
+
+  public record OperationsResponse(
+      OperationType operationType,
+      String description,
+      int paramsQuantity,
+      BigDecimal cost) {
   }
 
 }
