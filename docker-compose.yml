@@ -1,9 +1,30 @@
+version: '3'
+
 services:
-  database:
+  mysql:
     image: 'mysql:latest'
     ports:
       - '3306:3306'
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "--silent" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     environment:
-      - 'MYSQL_ROOT_PASSWORD=arithmetics'
+      - 'MYSQL_ROOT_PASSWORD=s3cr3t'
+      - 'MYSQL_USER=arithmetics'
       - 'MYSQL_DATABASE=arithmetics'
-      - 'POSTGRES_PASSWORD=s3cr3t'
+      - 'MYSQL_PASSWORD=s3cr3t'
+
+  arithmetics:
+    #image: public.ecr.aws/j3c6d5f6/arithmetics:latest ## Uncomment this to pull from AWS ECR and comment out build
+    build: .
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - 'JDBC_URL=mysql:3306/arithmetics'
+      - 'JDBC_USER=arithmetics'
+      - 'JDBC_PASSWORD=s3cr3t'
+    ports:
+      - '8080:8080'

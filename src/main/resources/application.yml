@@ -12,6 +12,10 @@ randomDotOrg:
   apiKey: "25775a38-5c88-42a7-8780-aa5bd9bc8b20"
 
 spring:
+  profiles:
+    active:
+      - dev
+
   liquibase:
     enabled: true
     change-log: classpath:db/db-master-changelog.xml

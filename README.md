@@ -19,8 +19,42 @@ Strings.
 
 ### Running locally with jdk 17 and maven
 
-This project is set up to spin up the mysql container on run by default (Maven profile "docker"). Also, the settings 
-that point to such container are defined for the spring "dev" profile. Running the project
+This project is set up to spin up the mysql container on run by default (Maven profile "docker"). Also, the settings
+that point to such container are defined for the spring "dev" profile. The dev profile is also set as default. To run it
+with the database container just run the following command:
+
+To build the project simply run:
+
+```shell
+mvn package 
+```
+
+Now you can run the application:
+
+```shell
+mvn spring-boot:run
+```
+
+If you wish to run it pointing to a local installation of mysql or on another server you can run the following command
+to build it without the spring-boot-docker-compose dependency:
+
+```shell
+mvn -P \!docker package
+```
+
+You can then run it using another spring profile:
+
+```shell
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+### Running with Docker
+
+You can run the stack with docker:
+
+```shell
+docker-compose up
+```
 
 ### Project Structure
 

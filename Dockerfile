@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY pom.xml .
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn -P \!docker clean package -DskipTests
 FROM openjdk:17-oracle
 
 WORKDIR /app
@@ -12,4 +12,4 @@ WORKDIR /app
 COPY --from=build /app/target/arithmetics.jar ./arithmetics.jar
 ENV JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
 
-CMD ["java", "-jar", "arithmetics.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=default", "arithmetics.jar"]
