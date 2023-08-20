@@ -3,7 +3,7 @@ package dev.jlcorradi.Arithmetics.core.commons;
 import lombok.Getter;
 
 public enum OperationType {
-  ADDITION("Adition"),
+  ADDITION("Addition"),
   SUBTRACTION("Subtraction"),
   MULTIPLICATION("Multiplication"),
   DIVISION("Division"),

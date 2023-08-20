@@ -50,7 +50,9 @@ mvn spring-boot:run -Dspring-boot.run.profiles=local
 
 ### Running with Docker
 
-You can run the stack with docker:
+You can run the stack with docker, however you need to uncomment the service ```arithmetics``` from the docker file.
+The reason it is commented out is that ```spring-boot-docker-container``` runs it from there as well conflicting with
+ports.
 
 ```shell
 docker-compose up

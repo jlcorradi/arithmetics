@@ -16,15 +16,16 @@ services:
       - 'MYSQL_DATABASE=arithmetics'
       - 'MYSQL_PASSWORD=s3cr3t'
 
-  arithmetics:
-    #image: public.ecr.aws/j3c6d5f6/arithmetics:latest ## Uncomment this to pull from AWS ECR and comment out build
-    build: .
-    depends_on:
-      mysql:
-        condition: service_healthy
-    environment:
-      - 'JDBC_URL=mysql:3306/arithmetics'
-      - 'JDBC_USER=arithmetics'
-      - 'JDBC_PASSWORD=s3cr3t'
-    ports:
-      - '8080:8080'
+  #Uncomment the following section if you want to run the backend with docker-compose up
+#  arithmetics:
+#    #image: public.ecr.aws/j3c6d5f6/arithmetics:latest ## Uncomment this to pull from AWS ECR and comment out build
+#    build: .
+#    depends_on:
+#      mysql:
+#        condition: service_healthy
+#    environment:
+#      - 'JDBC_URL=mysql:3306/arithmetics'
+#      - 'JDBC_USER=arithmetics'
+#      - 'JDBC_PASSWORD=s3cr3t'
+#    ports:
+#      - '8080:8080'
