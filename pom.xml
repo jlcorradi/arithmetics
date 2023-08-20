@@ -104,7 +104,10 @@
 
     <profiles>
         <profile>
-            <id>docker-compose</id>
+            <id>docker</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <dependencies>
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
