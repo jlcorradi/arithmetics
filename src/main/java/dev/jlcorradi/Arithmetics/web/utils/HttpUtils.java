@@ -1,9 +1,8 @@
 package dev.jlcorradi.Arithmetics.web.utils;
 
-import dev.jlcorradi.Arithmetics.core.BusinessException;
-import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import dev.jlcorradi.Arithmetics.web.HeaderMessageType;
+import dev.jlcorradi.Arithmetics.web.security.JwtAuthenticationToken;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Utility class for working with HTTP-related tasks.
@@ -52,9 +50,11 @@ public class HttpUtils {
    * or an empty Optional if not logged in or details are not available.
    */
   public static ArithmeticsUser getLoggedinUser() {
-    return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getDetails())
-        .map(o -> (ArithmeticsUser) o)
-        .orElseThrow(() -> new BusinessException(MessageConstants.ACCESS_DENIED_ERR));
+    if (!JwtAuthenticationToken.class.isAssignableFrom(
+        SecurityContextHolder.getContext().getAuthentication().getClass())) {
+      return null;
+    }
+    return (ArithmeticsUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
 }
 
