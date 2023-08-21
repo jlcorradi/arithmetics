@@ -1,10 +1,14 @@
 package dev.jlcorradi.Arithmetics.web.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
@@ -29,18 +33,17 @@ public class JwtTokenService {
   }
 
   public boolean isValidToken(String authToken) {
+    if (!StringUtils.hasText(authToken)) {
+      return false;
+    }
+
     try {
       Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
       return true;
-    } catch (MalformedJwtException ex) {
-      log.error("Invalid JWT token");
-    } catch (ExpiredJwtException ex) {
-      log.error("Expired JWT token");
-    } catch (UnsupportedJwtException ex) {
-      log.error("Unsupported JWT token");
-    } catch (IllegalArgumentException ex) {
-      log.error("JWT claims string is empty.");
+    } catch (JwtException ex) {
+      log.warn(ex.getMessage());
     }
+
     return false;
   }
 
