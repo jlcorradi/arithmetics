@@ -5,10 +5,14 @@ spring:
       hibernate:
         format_sql: false
   datasource:
-    url: jdbc:mysql://mysql:3306/arithmetics?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://mysql:3366/arithmetics?allowPublicKeyRetrieval=true&useSSL=false
     username: arithmetics
     password: s3cr3t
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  docker:
+    compose:
+      file: classpath:docker/embedded-compose.yml
 
 logging:
   level:

@@ -17,6 +17,16 @@ Strings.
 
 ## Running the Application
 
+### Running with Docker
+
+You can run the stack with docker with the command
+
+```shell
+docker-compose up
+```
+
+Remote debugging is available at port 5005.
+
 ### Running locally with jdk 17 and maven
 
 This project is set up to spin up the mysql container on run by default (Maven profile "docker"). Also, the settings
@@ -35,8 +45,10 @@ Now you can run the application:
 mvn spring-boot:run
 ```
 
-If you wish to run it pointing to a local installation of mysql or on another server you can run the following command
-to build it without the spring-boot-docker-compose dependency:
+You can also run it on your IDE of choice.
+
+If you wish to run it pointing to a local installation of mysql you can run the following command to build it without
+the spring-boot-docker-compose dependency:
 
 ```shell
 mvn -P \!docker package
@@ -46,16 +58,6 @@ You can then run it using another spring profile:
 
 ```shell
 mvn spring-boot:run -Dspring-boot.run.profiles=local
-```
-
-### Running with Docker
-
-You can run the stack with docker, however you need to uncomment the service ```arithmetics``` from the docker file.
-The reason it is commented out is that ```spring-boot-docker-container``` runs it from there as well conflicting with
-ports.
-
-```shell
-docker-compose up
 ```
 
 ### Project Structure
