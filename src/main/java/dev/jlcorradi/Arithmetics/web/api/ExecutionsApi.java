@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static dev.jlcorradi.Arithmetics.web.utils.DateUtils.convertToDefaultTimeZone;
 import static dev.jlcorradi.Arithmetics.web.utils.DateUtils.resolveDateOrDefault;
 import static dev.jlcorradi.Arithmetics.web.utils.HttpUtils.getLoggedinUser;
 
@@ -78,7 +79,7 @@ public class ExecutionsApi {
             records.getContent().stream()
                 .map(record -> new OperationResponse(
                     record.getId(),
-                    record.getDate(),
+                    convertToDefaultTimeZone(record.getDate()),
                     record.getDescription(),
                     record.getAmount(),
                     record.getUserBalance(),

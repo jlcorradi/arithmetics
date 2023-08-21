@@ -15,3 +15,4 @@ services:
       - 'MYSQL_USER=arithmetics'
       - 'MYSQL_DATABASE=arithmetics'
       - 'MYSQL_PASSWORD=s3cr3t'
+      - 'TZ=UTC'

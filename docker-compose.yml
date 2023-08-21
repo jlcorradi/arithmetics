@@ -13,6 +13,7 @@ services:
       - 'MYSQL_USER=arithmetics'
       - 'MYSQL_DATABASE=arithmetics'
       - 'MYSQL_PASSWORD=s3cr3t'
+      - 'TZ=UTC'
 
   arithmetics:
     #image: public.ecr.aws/j3c6d5f6/arithmetics:latest ## Uncomment this to pull from AWS ECR and comment out build

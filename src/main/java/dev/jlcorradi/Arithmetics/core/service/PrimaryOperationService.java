@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -56,7 +58,7 @@ public class PrimaryOperationService implements OperationService {
 
     Record record = Record.builder()
         .user(user)
-        .date(LocalDateTime.now())
+        .date(LocalDateTime.now(ZoneOffset.UTC))
         .description(description)
         .operation(operation)
         .operationResponse(result.toString())
