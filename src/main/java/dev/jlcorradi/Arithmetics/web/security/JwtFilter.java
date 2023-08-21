@@ -44,15 +44,16 @@ public class JwtFilter extends OncePerRequestFilter {
       return;
     }
 
+    String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+    String jwt = StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_) ? authHeader.substring(7) : null;
+
+    if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
+      filterChain.doFilter(request, response);
+      return;
+    }
+
     // 2 - Authenticate
     try {
-      String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-      String jwt = StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_) ? authHeader.substring(7) : null;
-
-      if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
-        filterChain.doFilter(request, response);
-        return;
-      }
 
       if (StringUtils.hasText(jwt) && jwtProvider.isValidToken(jwt)) {
         String username = jwtProvider.getUsernameFromJWT(jwt);
