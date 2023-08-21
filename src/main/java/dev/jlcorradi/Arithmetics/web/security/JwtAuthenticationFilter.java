@@ -2,6 +2,7 @@ package dev.jlcorradi.Arithmetics.web.security;
 
 import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
+import dev.jlcorradi.Arithmetics.core.service.ArithmeticsUserService;
 import dev.jlcorradi.Arithmetics.web.Paths;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,8 +15,6 @@ import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,12 +24,12 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   public static final String BEARER_ = "Bearer ";
   public static final String BEARER_PREFIX = "Bearer ";
 
-  public final UserDetailsService userService;
+  private final ArithmeticsUserService userService;
   private final JwtTokenService jwtProvider;
 
   @Override
@@ -44,27 +43,25 @@ public class JwtFilter extends OncePerRequestFilter {
 
     if (request.getServletPath().contains(Paths.API_AUTH_V1) ||
         authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
+      log.debug("request not applicable for filter: {}", request.getRequestURI());
       filterChain.doFilter(request, response);
       return;
     }
 
     // 2 - Authenticate
-    try {
+    if (jwtProvider.isValidToken(jwt)) {
+      String username = jwtProvider.getUsernameFromJWT(jwt);
 
-      if (StringUtils.hasText(jwt) && jwtProvider.isValidToken(jwt)) {
-        String username = jwtProvider.getUsernameFromJWT(jwt);
+      ArithmeticsUser arithmeticsUser = userService.findByUsername(username)
+          .orElseThrow(() -> new BadCredentialsException(MessageConstants.ACCESS_DENIED_ERR));
 
-        UserDetails userDetails = userService.loadUserByUsername(username);
+      JwtAuthenticationToken auth = new JwtAuthenticationToken(arithmeticsUser);
 
-        JwtAuthenticationToken auth =
-            new JwtAuthenticationToken((ArithmeticsUser) userDetails);
+      SecurityContext jwtAuthContext = SecurityContextHolder.createEmptyContext();
+      jwtAuthContext.setAuthentication(auth);
+      SecurityContextHolder.setContext(jwtAuthContext);
 
-        SecurityContext jwtAuthContext = SecurityContextHolder.createEmptyContext();
-        jwtAuthContext.setAuthentication(auth);
-        SecurityContextHolder.setContext(jwtAuthContext);
-      }
-    } catch (Exception ex) {
-      throw new BadCredentialsException(MessageConstants.ACCESS_DENIED_ERR);
+      log.debug("request authenticated by {}", getClass().getName());
     }
 
     // 3 - Next

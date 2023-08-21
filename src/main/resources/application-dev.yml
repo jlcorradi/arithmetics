@@ -13,6 +13,7 @@ spring:
   docker:
     compose:
       file: classpath:docker/embedded-compose.yml
+      lifecycle-management: START_ONLY
 
 logging:
   level:
