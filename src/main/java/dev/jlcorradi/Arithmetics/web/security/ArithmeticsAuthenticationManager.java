@@ -1,6 +1,7 @@
 package dev.jlcorradi.Arithmetics.web.security;
 
 import dev.jlcorradi.Arithmetics.core.MessageConstants;
+import dev.jlcorradi.Arithmetics.core.commons.RecordStatus;
 import dev.jlcorradi.Arithmetics.core.service.ArithmeticsUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class ArithmeticsAuthenticationManager implements AuthenticationManager {
     String username = String.valueOf(authentication.getPrincipal());
     log.debug("Executing authentication with username and password - {}", username);
     return userService.findByUsername(username)
+        .filter(arithmeticsUser -> arithmeticsUser.getStatus().equals(RecordStatus.ACTIVE))
         .map(arithmeticsUser -> {
           if (passwordEncoder.matches(authentication.getCredentials().toString(), arithmeticsUser.getPassword())) {
             return new JwtAuthenticationToken(arithmeticsUser);
