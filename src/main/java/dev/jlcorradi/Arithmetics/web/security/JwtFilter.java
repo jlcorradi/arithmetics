@@ -39,15 +39,11 @@ public class JwtFilter extends OncePerRequestFilter {
       throws ServletException, IOException,
       AccountStatusException {
     // 1 - Decide
-    if (request.getServletPath().contains(Paths.API_AUTH_V1)) {
-      filterChain.doFilter(request, response);
-      return;
-    }
-
     String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
     String jwt = StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_) ? authHeader.substring(7) : null;
 
-    if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
+    if (request.getServletPath().contains(Paths.API_AUTH_V1) ||
+        authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
       filterChain.doFilter(request, response);
       return;
     }
