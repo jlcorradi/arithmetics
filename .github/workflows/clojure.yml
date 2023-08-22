@@ -31,7 +31,7 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx build \
-            --file ../Dockerfile \
+            --file ../../Dockerfile \
             --tag $ECR_REPOSITORY_NAME:$IMAGE_TAG \
             --output type=image,push=true \
             .
