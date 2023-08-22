@@ -42,9 +42,6 @@ public class PrimaryOperationService implements OperationService {
     BigDecimal userBalance = user.getUserBalance();
     validateUserBalance(userBalance, operation);
 
-    if (log.isDebugEnabled()) {
-      log.debug("Executing Operation {} - User: {}. User Balance: {}", operation, user, userBalance);
-    }
     Object result = operationExecutionManager.execute(operationType, params);
     userBalance = userBalance.subtract(operation.getCost());
 
