@@ -22,7 +22,7 @@ jobs:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          ECR_REPOSITORY_NAME: public.ecr.aws/j3c6d5f6/arithmetics
+          ECR_REPOSITORY_NAME: arithmetics
           IMAGE_TAG: ${{ github.ref }} # Using the pushed tag as the image tag
         run: |
           docker buildx create --use
