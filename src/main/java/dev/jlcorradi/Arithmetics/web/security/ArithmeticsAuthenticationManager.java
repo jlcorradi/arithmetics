@@ -2,6 +2,7 @@ package dev.jlcorradi.Arithmetics.web.security;
 
 import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import dev.jlcorradi.Arithmetics.core.commons.RecordStatus;
+import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import dev.jlcorradi.Arithmetics.core.service.ArithmeticsUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +25,16 @@ public class ArithmeticsAuthenticationManager implements AuthenticationManager {
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     String username = String.valueOf(authentication.getPrincipal());
     log.debug("Executing authentication with username and password - {}", username);
+
     return userService.findByUsername(username)
-        .filter(arithmeticsUser -> arithmeticsUser.getStatus().equals(RecordStatus.ACTIVE))
-        .map(arithmeticsUser -> {
-          if (passwordEncoder.matches(authentication.getCredentials().toString(), arithmeticsUser.getPassword())) {
-            return new JwtAuthenticationToken(arithmeticsUser);
-          }
-          return null;
-        }).orElseThrow(() -> new BadCredentialsException(MessageConstants.BAD_CREDENTIALS_ERR));
+        .filter(user -> isValidUser(user, String.valueOf(authentication.getCredentials())))
+        .map(JwtAuthenticationToken::new)
+        .orElseThrow(() -> new BadCredentialsException(MessageConstants.BAD_CREDENTIALS_ERR));
+  }
+
+  private boolean isValidUser(ArithmeticsUser user, String givenPassword) {
+    return RecordStatus.ACTIVE.equals(user.getStatus()) &&
+        passwordEncoder.matches(givenPassword, user.getPassword());
   }
 
 }

@@ -15,7 +15,9 @@ public class ApiErrorHandler {
 
   @ExceptionHandler(BusinessException.class)
   public ResponseEntity<?> handleException(BusinessException ex) {
-    log.debug("Handling Business: {}", ex.getMessage());
+    if (log.isDebugEnabled()) {
+      log.debug("Handling Business: {}", ex.getMessage());
+    }
     HttpUtils.addHeaderMessage(HeaderMessageType.ERROR, ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(ex.getMessage()));
   }

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -43,11 +42,15 @@ public class PrimaryOperationService implements OperationService {
     BigDecimal userBalance = user.getUserBalance();
     validateUserBalance(userBalance, operation);
 
-    log.debug("Executing Operation {} - User: {}. User Balance: {}", operation, user, userBalance);
+    if (log.isDebugEnabled()) {
+      log.debug("Executing Operation {} - User: {}. User Balance: {}", operation, user, userBalance);
+    }
     Object result = operationExecutionManager.execute(operationType, params);
     userBalance = userBalance.subtract(operation.getCost());
 
-    log.debug("Operation Executed. New User Balance: {}", userBalance);
+    if (log.isDebugEnabled()) {
+      log.debug("Operation Executed. New User Balance: {}", userBalance);
+    }
 
     userService.updateBalance(user, userBalance);
 

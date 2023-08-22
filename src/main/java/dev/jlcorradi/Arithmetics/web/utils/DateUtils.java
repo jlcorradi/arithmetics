@@ -20,7 +20,9 @@ public class DateUtils {
     try {
       return LocalDateTime.parse(dateAsString, DateTimeFormatter.ISO_DATE_TIME);
     } catch (Exception ex) {
-      log.debug("String could not be resolved as date: {}", dateAsString);
+      if (log.isDebugEnabled()) {
+        log.debug("String could not be resolved as date: {}", dateAsString);
+      }
     }
     return defaultDateSupplier.get();
   }

@@ -43,7 +43,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     if (request.getServletPath().contains(Paths.API_AUTH_V1) ||
         authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
-      log.debug("request not applicable for filter: {}", request.getRequestURI());
       filterChain.doFilter(request, response);
       return;
     }
@@ -60,8 +59,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       SecurityContext jwtAuthContext = SecurityContextHolder.createEmptyContext();
       jwtAuthContext.setAuthentication(auth);
       SecurityContextHolder.setContext(jwtAuthContext);
-
-      log.debug("request authenticated by {}", getClass().getName());
     }
 
     // 3 - Next
