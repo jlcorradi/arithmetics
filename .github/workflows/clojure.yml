@@ -1,0 +1,35 @@
+name: Clojure Docker Build and Push
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and Push Docker Image
+        env:
+          AWS_REGION: us-east-1
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          ECR_REPOSITORY_NAME: public.ecr.aws/j3c6d5f6/arithmetics
+          IMAGE_TAG: ${{ github.ref }} # Using the pushed tag as the image tag
+        run: |
+          docker buildx create --use
+          docker buildx build \
+            --file path/to/your/Dockerfile \
+            --tag $ECR_REPOSITORY_NAME:$IMAGE_TAG \
+            --output type=image,push=true \
+            .
+          docker buildx rm
+
