@@ -7,7 +7,9 @@ import dev.jlcorradi.Arithmetics.core.service.ArithmeticsUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class ArithmeticsAuthenticationManager implements AuthenticationManager {
+public class ArithmeticsAuthenticationProvider implements AuthenticationProvider {
 
   private final ArithmeticsUserService userService;
   private final PasswordEncoder passwordEncoder;
@@ -30,6 +32,11 @@ public class ArithmeticsAuthenticationManager implements AuthenticationManager {
         .filter(user -> isValidUser(user, String.valueOf(authentication.getCredentials())))
         .map(JwtAuthenticationToken::new)
         .orElseThrow(() -> new BadCredentialsException(MessageConstants.BAD_CREDENTIALS_ERR));
+  }
+
+  @Override
+  public boolean supports(Class<?> authentication) {
+    return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
   }
 
   private boolean isValidUser(ArithmeticsUser user, String givenPassword) {

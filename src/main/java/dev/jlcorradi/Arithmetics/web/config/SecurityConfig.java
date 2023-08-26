@@ -1,6 +1,7 @@
 package dev.jlcorradi.Arithmetics.web.config;
 
 import dev.jlcorradi.Arithmetics.web.Paths;
+import dev.jlcorradi.Arithmetics.web.security.ArithmeticsAuthenticationProvider;
 import dev.jlcorradi.Arithmetics.web.security.CustomAuthenticationEntryPointErrorHandler;
 import dev.jlcorradi.Arithmetics.web.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
@@ -8,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -45,7 +46,11 @@ public class SecurityConfig {
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+  public AuthenticationManager authenticationManager(
+      HttpSecurity http,
+      ArithmeticsAuthenticationProvider authenticationProvider) throws Exception {
+    return http.getSharedObject(AuthenticationManagerBuilder.class)
+        .authenticationProvider(authenticationProvider)
+        .build();
   }
 }
