@@ -1,19 +1,18 @@
 package dev.jlcorradi.Arithmetics.web.security;
 
-import dev.jlcorradi.Arithmetics.core.MessageConstants;
 import dev.jlcorradi.Arithmetics.core.commons.RecordStatus;
 import dev.jlcorradi.Arithmetics.core.model.ArithmeticsUser;
 import dev.jlcorradi.Arithmetics.core.service.ArithmeticsUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,10 +27,15 @@ public class ArithmeticsAuthenticationProvider implements AuthenticationProvider
     String username = String.valueOf(authentication.getPrincipal());
     log.debug("Executing authentication with username and password - {}", username);
 
-    return userService.findByUsername(username)
-        .filter(user -> isValidUser(user, String.valueOf(authentication.getCredentials())))
-        .map(JwtAuthenticationToken::new)
-        .orElseThrow(() -> new BadCredentialsException(MessageConstants.BAD_CREDENTIALS_ERR));
+    Optional<ArithmeticsUser> byUsername = userService.findByUsername(username);
+    if (byUsername.isPresent()) {
+      ArithmeticsUser arithmeticsUser = byUsername.get();
+      if (isValidUser(arithmeticsUser, String.valueOf(authentication.getCredentials()))) {
+        return new JwtAuthenticationToken(arithmeticsUser);
+      }
+    }
+
+    return null;
   }
 
   @Override
